@@ -1,0 +1,20 @@
+{
+  "name": "Dockurr Windows VM Dev",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest"
+    }
+  },
+  "runArgs": ["--privileged"],
+  "postStartCommand": "nohup bash -lc 'while true; do echo \"[KEEPALIVE] $(date)\"; sleep 300; done' >/tmp/keepalive.log 2>&1 & docker run --rm --name windows-vm --privileged -p 8006:8006 -v /workspaces/windows:/storage -e CPU_CORES=2 -e RAM_SIZE=4G -e DISK_SIZE=15G -e USERNAME=Admin -e PASSWORD='Tai18022009@' -e VERSION=2012 dockurr/windows",
+  "mounts": [
+    "source=${localWorkspaceFolder}/windows,target=/workspaces/windows,type=bind"
+  ],
+  "forwardPorts": [8006],
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-azuretools.vscode-docker"]
+    }
+  }
+}
